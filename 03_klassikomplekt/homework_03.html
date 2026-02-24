@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kultuuriranitsa Eelarve</title>
+    <script src="homework_03.js"></script>
+    <script>
+        let tracker;
+        function startPage() {
+            let canvas = document.getElementById("canvas1");
+            let ctx = canvas.getContext("2d");
+
+            tracker = new BudgetTracker(ctx, 400);
+            let item1 = new BudgetItem("Teatri külastus", 150, ctx, 20, 50);
+            let item2 = new BudgetItem("Muuseumi tuur", 80, ctx, 20, 100);
+            let item3 = new BudgetItem("Bussisõit", 100, ctx, 20, 150);
+
+            tracker.addItem(item1);
+            tracker.addItem(item2);
+            tracker.addItem(item3);
+
+            tracker.drawSummary();
+
+            document.getElementById("range1").value = item1.getCost();
+            document.getElementById("val1").innerText = item1.getCost();
+
+            document.getElementById("range2").value = item2.getCost();
+            document.getElementById("val2").innerText = item2.getCost();
+        }
+
+        function onRange1(input){
+            const v = input.valueAsNumber;
+            document.getElementById("val1").innerText = v;
+            tracker.updateItemAndSummary(0, v);
+        }
+
+        function onRange2(input){
+            const v = input.valueAsNumber;
+            document.getElementById("val2").innerText = v;
+            tracker.updateItemAndSummary(1, v);
+        }
+    </script>
+</head>
+
+<body onload="startPage()">
+    <h2>Kultuuriranitsa Eelarve (Hoidla ja Eksemplarid)</h2>
+    <canvas id="canvas1" width="600" height="250" style="border:1px solid#000; background-color: #f9f9f9;"></canvas>
+
+    <br><br>
+    <label>Teatri hind:</label>
+    <input type="range" id="range1" min="0" max="200" oninput="onRange1(this)"/>
+    <span id="val1"></span> EUR
+
+    <br><br>
+    <label>Muuseumi hind:</label>
+    <input type="range" id="range2" min="0" max="200" oninput="onRange2(this)"/>
+    <span id="val2"></span> EUR
+
+</body>
+
+</html>

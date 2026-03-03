@@ -30,13 +30,13 @@
             document.getElementById("val2").innerText = item2.getCost();
         }
 
-        function onRange1(input){
+        function onRange1(input) {
             const v = input.valueAsNumber;
             document.getElementById("val1").innerText = v;
             tracker.updateItemAndSummary(0, v);
         }
 
-        function onRange2(input){
+        function onRange2(input) {
             const v = input.valueAsNumber;
             document.getElementById("val2").innerText = v;
             tracker.updateItemAndSummary(1, v);
@@ -45,17 +45,17 @@
 </head>
 
 <body onload="startPage()">
-    <h2>Kultuuriranitsa Eelarve (Hoidla ja Eksemplarid)</h2>
+    <h2>Väljasõidu eelarve (Hoidla ja Eksemplarid)</h2>
     <canvas id="canvas1" width="600" height="250" style="border:1px solid#000; background-color: #f9f9f9;"></canvas>
 
     <br><br>
     <label>Teatri hind:</label>
-    <input type="range" id="range1" min="0" max="200" oninput="onRange1(this)"/>
+    <input type="range" id="range1" min="0" max="200" oninput="onRange1(this)" />
     <span id="val1"></span> EUR
 
     <br><br>
     <label>Muuseumi hind:</label>
-    <input type="range" id="range2" min="0" max="200" oninput="onRange2(this)"/>
+    <input type="range" id="range2" min="0" max="200" oninput="onRange2(this)" />
     <span id="val2"></span> EUR
 
 </body>

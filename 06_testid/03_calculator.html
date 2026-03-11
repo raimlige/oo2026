@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <script>
+        let calcobj = null;
+        let exports = {};
+        function startPage() {
+            calcobj = new Calculator();
+            document.getElementById("panel1").innerText = calcobj.getPanelContent();
+        }
+
+        function buttonPress(ev) {
+            calcobj.pressButton(ev.target.value);
+            document.getElementById("panel1").innerText = calcobj.getPanelContent();
+        }
+        //This is to expose the functions to the html
+        window.startPage = startPage;
+        window.buttonPress = buttonPress;
+    </script>
+    <script src="03_calculator.js" defer></script>
+    <style>
+        input[type=button] {
+            width: 50px;
+            padding: 5px;
+            border: 1px solid black;
+            font-family: cambria;
+            border-radius: 10px;
+        }
+
+        #panel1 {
+            width: 157px;
+            height: 20px;
+            margin-bottom: 10px;
+            border: 1px solid black;
+            background-color: gainsboro;
+        }
+
+        #clearButton {
+            width: 50px;
+            height: 50px;
+            background-color: darkorange;
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+
+<body onload="startPage()">
+    <h1>Calculator</h1>
+    <div id="panel1"></div>
+    <input type="button" onclick="buttonPress(event)" value="1" />
+    <input type="button" onclick="buttonPress(event)" value="2" />
+    <input type="button" onclick="buttonPress(event)" value="3" />
+    <br>
+    <input type="button" onclick="buttonPress(event)" value="4" />
+    <input type="button" onclick="buttonPress(event)" value="5" />
+    <input type="button" onclick="buttonPress(event)" value="6" />
+    <br>
+    <input type="button" onclick="buttonPress(event)" value="7" />
+    <input type="button" onclick="buttonPress(event)" value="8" />
+    <input type="button" onclick="buttonPress(event)" value="9" />
+    <br>
+    <input type="button" onclick="buttonPress(event)" value="0" />
+    <br>
+    <br>
+    <input type="button" id="clearButton" onclick="buttonPress(event)" value="C" />
+</body>
+
+</html>

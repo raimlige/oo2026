@@ -1,0 +1,12 @@
+Battery
+Charging 1 mAh of battery capacity requires 3.6 joules of energy.
+1 watt equals 1 joule per second.
+
+Create a class for a battery. The constructor parameters are maximum capacity (mAh) and current charge level (mAh).
+Create a command to output the charge percentage.
+The charger power is 50 W. Add a command where the number of seconds the charger is connected is specified. Assume all energy is used to charge the battery.
+A command allows querying the current charge level.
+If charging exceeds the maximum capacity, a separate notification is given. If the charge level reaches 0, a warning is given.
+Make the battery model work as a class on a webpage.
+Through the user interface, the user can enter the number of seconds for charging and view the current charge level and percentage.
+If the battery becomes empty or overcharged, a warning is displayed.

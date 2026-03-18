@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="02_geometric_mean.js"></script>
+    <script>
+        let salaryObj;
+
+        // Create object
+        function createSalary() {
+            let s = document.getElementById("salary").valueAsNumber;
+            let y = document.getElementById("years").valueAsNumber;
+            salaryObj = new Salary(s, y);
+        }
+
+        // Add coefficient
+        function addCoef() {
+            if (!salaryObj) return;
+            let c = Number(document.getElementById("coef").value);
+            salaryObj.addCoefficient(c);
+        }
+
+        // Show results
+        function showAll() {
+            if (!salaryObj) return;
+
+            document.getElementById("output").innerText = "";
+
+            print("First year salary: " + salaryObj.showFirstYear());
+            print("Salaries: " + salaryObj.getSalaries());
+            print("Geometric mean: " + salaryObj.getGeometricMean());
+            print("Salaries with mean: " + salaryObj.getSalariesWithMean());
+        }
+
+        function print(text) {
+            document.getElementById("output").innerText += text + "\n";
+        }
+    </script>
+</head>
+
+<body>
+    <h2>Salary Calculator</h2>
+    <h3 style="color: red;">Please insert as many coefficients as years!</h3>
+    First Year Salary: <input id="salary" type="number"><br><br>
+    Years: <input id="years" type="number"><br><br>
+    Coefficient: <input id="coef" type="number" step="0.01"><br><br>
+
+    <button onclick="createSalary()">Create Salary</button>
+    <button onclick="addCoef()">Add Coefficient</button>
+    <button onclick="showAll()">Show Results</button>
+
+    <pre id="output"></pre>
+</body>
+
+</html>

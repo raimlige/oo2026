@@ -29,3 +29,50 @@ test("clear panel", () => {
     calcobj.pressButton("C");
     expect(calcobj.getPanelContent()).toBe("0");
 })
+
+test("addition: 5+5 = 10", () => {
+    calcobj.pressButton("5");
+    calcobj.pressButton("+");
+    calcobj.pressButton("5");
+    calcobj.pressButton("=");
+    expect(calcobj.getPanelContent()).toBe("10");
+});
+
+test("division 7-2 = 5", () => {
+    calcobj.pressButton("7");
+    calcobj.pressButton("-");
+    calcobj.pressButton("2");
+    calcobj.pressButton("=");
+    expect(calcobj.getPanelContent()).toBe("5")
+});
+
+test("multiplication 5*3 = 15", () => {
+    calcobj.pressButton("5");
+    calcobj.pressButton("*");
+    calcobj.pressButton("3");
+    calcobj.pressButton("=");
+    expect(calcobj.getPanelContent()).toBe("15")
+});
+
+test("division 4/2 = 2", () => {
+    calcobj.pressButton("4");
+    calcobj.pressButton("/");
+    calcobj.pressButton("2");
+    calcobj.pressButton("=");
+    expect(calcobj.getPanelContent()).toBe("2")
+});
+
+test("zero replacement 0 --> 7", () => {
+    calcobj.pressButton("C");
+    calcobj.pressButton("7");
+    expect(calcobj.getPanelContent()).toBe("7")
+});
+
+test("faulty input 5++5", () => {
+    calcobj.pressButton("5");
+    calcobj.pressButton("+");
+    calcobj.pressButton("+");
+    calcobj.pressButton("5");
+    calcobj.pressButton("=");
+    expect(calcobj.getPanelContent()).toBe("Error")
+});

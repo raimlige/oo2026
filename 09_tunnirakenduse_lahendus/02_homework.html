@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadtrip</title>
+    <script src="02_homework.js"></script>
+    <script>
+        let car = null;
+
+        function startPage() {
+            document.getElementById("output").innerText = "No info on the car/roadtrip"
+        }
+
+        function startCar() {
+            const initialFuel = document.getElementById("fuelInput").valueAsNumber;
+            const efficiency = document.getElementById("efficiencyInput").valueAsNumber;
+            const speed = document.getElementById("speedInput").valueAsNumber;
+
+            if (isNaN(initialFuel) || isNaN(efficiency) || isNaN(speed)) {
+                document.getElementById("output").innerText = "Please fill all the fields before starting the car."
+                return;
+            }
+
+            car = new Car(initialFuel, efficiency);
+            car.setSpeed(speed);
+
+            document.getElementById("output").innerText = `Car started with ${initialFuel}L of fuel. Ready to drive!`
+        }
+
+        function driveButton() {
+            if (!car) {
+                document.getElementById("output").innerText = "Please create the car first!"
+                return;
+            }
+
+            if (car.getFuel() <= 0) {
+                document.getElementById("output").innerText = "Error: Out of gas! You cannot drive any further!"
+                return
+            }
+            car.driveOneMinute();
+            document.getElementById("output").innerText = `You drove ${car.getDistance().toFixed(2)} km. Fuel left: ${car.getFuel().toFixed(2)} L`;
+        }
+
+        function calculateRange() {
+            if (!car) {
+                document.getElementById("output").innerText = "Please create the car first!"
+                return;
+            }
+
+            let results = car.calculateMaxRange();
+            let maxDist = results[0];
+            let minutesLeft = results[1];
+            document.getElementById("output").innerText = `You can drive ${maxDist.toFixed(2)} more km, which will take ${minutesLeft.toFixed(2)} minutes.`;
+        }
+    </script>
+</head>
+
+<body onload="startPage()">
+    <h1>Car fuel/roadtrip calculator</h1>
+
+    <label>Initial fuel (Liters): </label>
+    <input type="number" id="fuelInput"><br><br>
+
+    <label>Fuel efficiency (liters per 100km): </label>
+    <input type="number" id="efficiencyInput"><br><br>
+
+    <label>Driving speed (km/h): </label>
+    <input type="number" id="speedInput"><br><br>
+
+    <input type="button" value="Start Car" onclick="startCar()"><br><br>
+    <button onclick="driveButton()">Drive one minute</button><br><br>
+    <input type="button" value="Calculate Max Range" onclick="calculateRange()"><br><br>
+
+    <h2 id="output"></h2>
+</body>
+
+</html>

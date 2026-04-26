@@ -1,0 +1,86 @@
+Temperature and Energy Simulation
+Introduction
+In this exercise, you will build a program that models how temperature changes when energy is added, removed, or transferred between materials. The central idea is straightforward: when energy is added to an object, its temperature increases, and when energy is removed, its temperature decreases.
+
+The program will work with different materials such as water, iron, and air. Each material is described by three properties: its mass, its specific heat capacity, and its current temperature. These properties determine how the material responds to changes in energy.
+
+It is important to note that not all materials behave the same way. Some materials, such as water, require more energy to change their temperature, while others, such as iron, heat up more quickly. This difference is captured by the specific heat capacity.
+
+Another key concept is energy transfer. When two materials are at different temperatures, energy moves from the hotter object to the cooler one. As a result, the hotter object cools down and the cooler object warms up. Over time, if energy exchange continues, all materials will reach the same temperature. This final balanced state is called the equal temperature.
+
+In this program, you will also consider that some materials influence the final temperature more than others. Larger objects or materials that are harder to heat have a stronger effect. This is handled through a helper method that measures how much each material contributes to the final result.
+
+
+Goal
+Create a program that demonstrates how temperature changes when energy is added to materials and how energy is transferred between them.
+
+
+Part 1: Create a Material Class
+Create a class called MaterialAmount.
+
+Each object should store:
+
+mass (in kilograms)
+specific heat capacity
+temperature (in degrees Celsius)
+The class should include:
+
+a constructor to initialize these values
+a method that returns the current temperature
+
+Part 2: Change Energy
+Add a method that:
+
+takes an amount of energy (in joules) as a parameter
+updates the temperature based on that energy
+Guideline:
+
+positive energy increases temperature
+negative energy decreases temperature
+
+Part 3: Test the Class
+Create two objects:
+
+water: mass 3 kg, specific heat capacity 4200, temperature 20°C
+iron: mass 10 kg, specific heat capacity 412, temperature 20°C
+Add 10,000 joules of energy to both objects.
+
+Print their temperatures and observe the difference.
+
+
+Part 4: Transfer Energy
+Determine which object has the higher temperature.
+
+If the iron object is hotter than the water:
+
+transfer 1000 joules of energy from iron to water
+Print the updated temperatures after the transfer.
+
+
+Part 5: Air in a Room
+Create a subclass called AirAmount.
+
+Instead of directly providing mass, calculate it using:
+
+room length
+room width
+room height
+Use the density of air to compute the mass.
+
+Use the given value for air density: 1.23 kg/m³.
+
+Use the given value for the specific heat capacity of air: 1012.
+
+
+Part 6: Equal Temperature
+Write a function that:
+
+takes a list of materials
+calculates the final temperature if they are allowed to exchange energy
+Guidelines:
+
+larger objects have a greater influence on the result
+materials that are harder to heat also have a greater influence
+You may need a helper method to determine how strongly each material affects the final temperature.
+
+Print the calculated equal temperature.

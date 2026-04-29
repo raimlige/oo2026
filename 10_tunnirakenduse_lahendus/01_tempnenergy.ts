@@ -54,7 +54,7 @@ function calculateEqualTemp(materials: MaterialAmount[]) {
     console.log(`The calculated equal temperature is: ${finalTemp.toFixed(2)} °C`);
 }
 
-
+/* Testing */
 let water = new MaterialAmount(3, 4200, 20);
 let iron = new MaterialAmount(10, 412, 20);
 let myRoomAir = new AirAmount(5, 4, 3, 25);

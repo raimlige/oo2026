@@ -1,0 +1,28 @@
+Library System
+
+You are building a digital catalogue for a local library. The library holds different types of items — currently books and DVDs — and staff need to be able to manage them through a simple web application.
+
+What the system should do:
+
+The system must be able to store and manage library items. Each item has basic information such as an ID, title, and year. Books and DVDs have their own additional details. The system should be able to display a readable summary of any item.
+
+The library catalogue itself should allow staff to add new items and view everything currently stored.
+
+Items need to be saved and restored between sessions — so the system should support exporting the catalogue to a file and loading it back. If a file contains invalid data, the system should handle it without crashing.
+
+Finally, build a web page where staff can add items, browse the catalogue, load a saved file, and download the current catalogue.
+
+Extension
+
+Once the core system works, improve it in one way of your choice. This could be anything that makes the system more useful or robust — for example, searching for items, adding a new item type, or preventing invalid input.
+
+Requirements
+
+Use classes
+Write tests alongside your code as you build
+
+
+PLAN:
+Base (parent) class - LibraryItem - ID, title, year
+Sub (child) classes - DVD and Books (dvd - duration), (books - pages)
+Manager class - Catalogue

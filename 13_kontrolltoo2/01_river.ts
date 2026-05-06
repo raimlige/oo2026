@@ -11,7 +11,7 @@
 // Find the shortest path to the nearest intermediate point and from there to the sea via target rivers.
 // Display the path (html) and its length. Then input another point on the map and determine whether the nearest intermediate point to it becomes polluted if pollution starts flowing from the first point.
 
-class River {
+export class River {
     name: string;
     source: number[];
     intermediate_points: number[][];
@@ -57,7 +57,7 @@ class River {
     }
 }
 
-class RiverManager {
+export class RiverManager {
     rivers: River[];
 
     constructor(inputRivers: River[]) {

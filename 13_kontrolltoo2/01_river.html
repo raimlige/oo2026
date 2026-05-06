@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>River app</title>
+
+    <script src="01_river.js"></script>
+    <script>
+        let riversArray = [];
+        let manager = null;
+
+        function addRiver() {
+            const name = document.getElementById("rivName").value;
+            const sourceStr = document.getElementById("rivSource").value;
+            const interStr = document.getElementById("rivInter").value;
+            const mouthStr = document.getElementById("rivMouth").value;
+            const targetName = document.getElementById("rivTarget").value;
+
+            try {
+                const parseCoord = (str) => str.split(',').map(Number);
+
+                const parseInter = (str) => {
+                    if (!str.trim()) return [];
+                    return str.split(';').map(pair => pair.split(',').map(Number));
+                };
+
+                const source = parseCoord(sourceStr);
+                const inter = parseInter(interStr);
+                const mouth = parseCoord(mouthStr);
+
+                const targetRiver = riversArray.find(r => r.name === targetName) || null;
+
+                const newRiver = new River(name, source, inter, mouth, targetRiver);
+                riversArray.push(newRiver);
+
+                manager = new RiverManager(riversArray);
+
+                updateRiverList();
+                clearRiverInputs();
+                alert(`River "${name}" added successfully!`);
+            } catch (e) {
+                alert("Error parsing coordinates. Please use the format: x,y");
+            }
+        }
+
+        function updateRiverList() {
+            const list = document.getElementById("active-rivers");
+            list.innerHTML = riversArray.map(r => `<li>${r.name} (Flows to: ${r.targetRiver ? r.targetRiver.name : 'Sea'})</li>`).join('');
+        }
+
+        function clearRiverInputs() {
+            document.getElementById("rivName").value = "";
+            document.getElementById("rivSource").value = "";
+            document.getElementById("rivInter").value = "";
+            document.getElementById("rivMouth").value = "";
+            document.getElementById("rivTarget").value = "";
+        }
+
+        function runPathCalc() {
+            if (!manager) return alert("Add a river first!");
+            const x = Number(document.getElementById("mapX").value);
+            const y = Number(document.getElementById("mapY").value);
+            const data = manager.getPathData([x, y]);
+            document.getElementById("path-output").innerHTML =
+                `Nearest River: <b>${data.riverName}</b><br>Total distance to sea: <b>${data.totalLength.toFixed(2)}m</b>`;
+        }
+
+        function runPollutionCheck() {
+            if (!manager) return alert("Add a river first!");
+            const ax = Number(document.getElementById("polluteX").value);
+            const ay = Number(document.getElementById("polluteY").value);
+            const bx = Number(document.getElementById("targetX").value);
+            const by = Number(document.getElementById("targetY").value);
+
+            const isPolluted = manager.checkPollution([ax, ay], [bx, by]);
+            const out = document.getElementById("pollution-output");
+            out.innerHTML = isPolluted ? "Pollution reaches Point B" : "Point B is safe";
+            out.style.color = isPolluted ? "red" : "green";
+        }
+    </script>
+</head>
+
+<body>
+
+    <h1>River app</h1>
+
+    <div class="section">
+        <h3>1. Create River Network</h3>
+        <label>River Name:</label> <input id="rivName" type="text" placeholder="e.g. Amazon"><br>
+        <label>Source (x,y):</label> <input id="rivSource" type="text" placeholder="0,0"><br>
+        <label>Intermediate (x,y; x,y):</label> <input id="rivInter" type="text" placeholder="10,10; 20,20"><br>
+        <label>Mouth (x,y):</label> <input id="rivMouth" type="text" placeholder="30,30"><br>
+        <label>Target River Name:</label> <input id="rivTarget" type="text" placeholder="Optional"><br>
+
+        <button onclick="addRiver()">Add River to System</button>
+
+        <h4>Active Rivers:</h4>
+        <ul id="active-rivers" class="river-list">
+            <li>No rivers added yet.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h3>2. Path & Distance Tool</h3>
+        <input id="mapX" type="number" placeholder="X" style="width: 50px;">
+        <input id="mapY" type="number" placeholder="Y" style="width: 50px;">
+        <button class="blue" onclick="runPathCalc()">Calculate Path</button>
+        <div id="path-output" style="margin-top: 10px;"></div>
+    </div>
+
+    <div class="section">
+        <h3>3. Pollution Impact</h3>
+        Source A (x,y): <input id="polluteX" type="number" placeholder="X" style="width: 40px;"> <input id="polluteY"
+            type="number" placeholder="Y" style="width: 40px;">
+        &nbsp; Target B (x,y): <input id="targetX" type="number" placeholder="X" style="width: 40px;"> <input
+            id="targetY" type="number" placeholder="Y" style="width: 40px;">
+        <button class="blue" onclick="runPollutionCheck()">Check Flow</button>
+        <div id="pollution-output"></div>

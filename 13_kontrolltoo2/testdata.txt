@@ -1,0 +1,21 @@
+TESTING POLLUTION INPUT WITH 1 RIVER - green
+Main river
+source - 0,0
+intermediate 10,10
+mouth - 20, 20
+source a - 20, 20 
+target b - 0, 0
+
+switching source and target coords will give red
+TESTING POLLUTION WITH 2 RIVERS - green
+Name: Main
+Source: 0,0
+Mouth: 100,100
+
+Name: SideRiver
+Source: 0,50
+Mouth: 50,50
+Target River: Main
+
+source a: 0,0
+target b: 0, 50

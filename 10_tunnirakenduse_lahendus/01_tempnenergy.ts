@@ -54,7 +54,8 @@ function calculateEqualTemp(materials: MaterialAmount[]) {
     console.log(`The calculated equal temperature is: ${finalTemp.toFixed(2)} °C`);
 }
 
-/* Testing */
+
+/* Testing 
 let water = new MaterialAmount(3, 4200, 20);
 let iron = new MaterialAmount(10, 412, 20);
 let myRoomAir = new AirAmount(5, 4, 3, 25);
@@ -73,4 +74,4 @@ if (iron.getTemp() > water.getTemp()) {
     console.log("Iron is not hotter than water. No transfer occurred.");
 }
 const myMaterials = [water, iron, myRoomAir];
-calculateEqualTemp(myMaterials);
+calculateEqualTemp(myMaterials); */

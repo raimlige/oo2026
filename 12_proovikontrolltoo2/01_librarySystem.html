@@ -48,22 +48,94 @@
                 console.log(err);
             }
         }
+
+        function loadFile() {
+            const fileInput = document.getElementById("fileInput");
+            if (!fileInput.files.length) return;
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const content = e.target.result;
+                // Split file into lines and filter out empty lines
+                const lines = content.split(/\r?\n/).filter(line => line.trim() !== "");
+
+                library = new Library(); // Reset library
+
+                lines.forEach(line => {
+                    const parts = line.split("|");
+                    const type = parts[0]; // BOOK or DVD
+
+                    if (type === "BOOK") {
+                        // Mapping parts: 0:Type, 1:ID, 2:Title, 3:Author, 4:Year, 5:Pages, 6:ISBN
+                        const item = new Book(
+                            parts[1],
+                            parts[2],
+                            parts[3],
+                            Number(parts[4]),
+                            Number(parts[5]),
+                            parts[6]
+                        );
+                        library.addItem(item);
+                    } else if (type === "DVD") {
+                        // Mapping parts: 0:Type, 1:ID, 2:Title, 3:Author, 4:Year, 5:Duration
+                        const item = new Dvd(
+                            parts[1],
+                            parts[2],
+                            parts[3],
+                            Number(parts[4]),
+                            Number(parts[5])
+                        );
+                        library.addItem(item);
+                    }
+                });
+                showItems();
+            };
+
+            reader.readAsText(file);
+        }
+
+        function download() {
+            const items = library.getAllItems();
+            // Convert items back into the Pipe-Separated format
+            const lines = items.map(item => {
+                if (item instanceof Book) {
+                    return `BOOK|${item.id}|${item.title}|${item.author}|${item.year}|${item.pages}|${item.ISBN}`;
+                } else {
+                    return `DVD|${item.id}|${item.title}|${item.author}|${item.year}|${item.duration}`;
+                }
+            });
+
+            const content = lines.join("\n");
+            const blob = new Blob([content], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "library.txt";
+            link.click();
+
+            URL.revokeObjectURL(url);
+        }
+
         function showItems() {
             const out = document.getElementById("output");
             out.innerHTML = "";
             const items = library.getAllItems();
-            if (items.lenght === 0) {
+
+            // Note: Fixed typo from 'lenght' to 'length'
+            if (items.length === 0) {
                 out.innerHTML = "(No items)";
                 return;
             }
+
             items.forEach(item => {
                 const div = document.createElement("div");
                 div.textContent = item.getSummary();
                 out.appendChild(div);
             });
         }
-        function loadFile() { }
-        function download() { }
         //Expose functions to HTML buttons
         window.startPage = startPage;
         window.addItem = addItem;

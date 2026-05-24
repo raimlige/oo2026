@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="et">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kultuuriasutuse Portaal</title>
+    <link rel="stylesheet" href="01_curatorApp.css">
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2 id="asutuse-nimi">Asutus</h2>
+        <button class="menu-btn" onclick="naitaPaneeli('vaata-paneel')">Minu programmid</button>
+        <button class="menu-btn" onclick="naitaPaneeli('lisa-paneel')">Lisa programm</button>
+        <button class="menu-btn" onclick="avaMuutmisPaneel()">Muuda programmi</button>
+    </div>
+
+    <div class="main-content">
+
+        <div id="vaata-paneel" class="panel active">
+            <h3>Kõik programmid</h3>
+            <div id="programmide-list"></div>
+        </div>
+
+        <div id="lisa-paneel" class="panel">
+            <h3>Lisa uus programm</h3>
+            <div class="form-group">
+                <label>Pealkiri</label>
+                <input type="text" id="uus-pealkiri">
+            </div>
+            <div class="form-group">
+                <label>Kirjeldus</label>
+                <textarea id="uus-kirjeldus" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Hind (€)</label>
+                <input type="number" id="uus-hind" step="0.1">
+            </div>
+            <div class="form-group">
+                <label>Asukoht</label>
+                <input type="text" id="uus-asukoht" placeholder="nt. Peahoone">
+            </div>
+            <button class="action-btn" id="lisa-nupp">Salvesta programm</button>
+        </div>
+
+        <div id="muuda-paneel" class="panel">
+            <h3>Muuda olemasolevat programmi</h3>
+            <div class="form-group">
+                <label>Vali programm</label>
+                <select id="muuda-valik" onchange="laeProgrammiAndmed()"></select>
+            </div>
+            <div class="form-group">
+                <label>Uus pealkiri</label>
+                <input type="text" id="muuda-pealkiri">
+            </div>
+            <div class="form-group">
+                <label>Uus kirjeldus</label>
+                <textarea id="muuda-kirjeldus" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Uus hind (€)</label>
+                <input type="number" id="muuda-hind" step="0.1">
+            </div>
+            <div class="form-group">
+                <label>Programmi staatus</label>
+                <select id="muuda-staatus">
+                    <option value="DRAFT">Mustand</option>
+                    <option value="PUBLISHED">Avalikustatud</option>
+                    <option value="ARCHIVED">Arhiveeritud</option>
+                </select>
+            </div>
+
+            <button class="action-btn" id="muuda-nupp">Uuenda andmeid</button>
+        </div>
+
+    </div>
+
+    <script src="01_curatorApp.js"></script>
+
+    <script>
+        const kumu = new CulturalInstitution(1, "KUMU Kuraatoriportaal", "12345678");
+        const curatorMary = new Curator(1, "Mari", "mari@kumu.ee", "pass", kumu);
+
+        let jargmineId = 102;
+
+        const testProgram = new Program(101, "Kevadnäituse tuur", "Põhjalik kuraatorituur.", 15.0, "KUMU Peahoone");
+        testProgram.setStatus("PUBLISHED"); 
+        curatorMary.addProgram(testProgram);
+
+        function naitaPaneeli(paneeliId) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(paneeliId).classList.add('active');
+
+            if (paneeliId === 'vaata-paneel') {
+                värskendaProgrammideListi();
+            }
+        }
+
+        function värskendaProgrammideListi() {
+            const listEl = document.getElementById("programmide-list");
+            listEl.innerHTML = "";
+
+            const programmid = kumu.getPrograms();
+
+            if (programmid.length === 0) {
+                listEl.innerHTML = "<p>Ühtegi programmi pole veel lisatud.</p>";
+                return;
+            }
+
+            programmid.forEach(p => {
+                let staatusTekst = p.getStatus() === "DRAFT" ? "Mustand" : 
+                                   p.getStatus() === "PUBLISHED" ? "Avalikustatud" : "Arhiveeritud";
+
+                const card = document.createElement("div");
+                card.className = "program-card";
+                
+                card.innerHTML = `
+                    <h4>${p.getTitle()} (ID: ${p.getId()})</h4>
+                    <p><strong>Kirjeldus:</strong> ${p.getDescription()}</p>
+                    <p><strong>Hind:</strong> ${p.getPrice()} €</p>
+                    <p><strong>Asukoht:</strong> ${p.getLocation()}</p>
+                    <p><strong>Staatus:</strong> <span style="color: #3498db; font-weight: bold;">${staatusTekst}</span></p>
+                `;
+                listEl.appendChild(card);
+            });
+        }
+
+        window.onload = () => {
+            document.getElementById("asutuse-nimi").innerText = kumu.getName();
+            värskendaProgrammideListi();
+
+            document.getElementById("lisa-nupp").addEventListener("click", () => {
+                const pealkiri = document.getElementById("uus-pealkiri").value;
+                const kirjeldus = document.getElementById("uus-kirjeldus").value;
+                const hind = parseFloat(document.getElementById("uus-hind").value);
+                const asukoht = document.getElementById("uus-asukoht").value;
+
+                if (pealkiri && kirjeldus && asukoht && !isNaN(hind)) {
+                    const uusProgramm = new Program(jargmineId++, pealkiri, kirjeldus, hind, asukoht);
+                    curatorMary.addProgram(uusProgramm);
+
+                    document.getElementById("uus-pealkiri").value = "";
+                    document.getElementById("uus-kirjeldus").value = "";
+                    document.getElementById("uus-hind").value = "";
+                    document.getElementById("uus-asukoht").value = "";
+
+                    naitaPaneeli('vaata-paneel');
+                } else {
+                    alert("Palun täida kõik väljad korrektselt!");
+                }
+            });
+
+            document.getElementById("muuda-nupp").addEventListener("click", () => {
+                const valitudId = parseInt(document.getElementById("muuda-valik").value);
+                const programm = kumu.findProgram(valitudId);
+
+                if (programm) {
+                    const uusPealkiri = document.getElementById("muuda-pealkiri").value;
+                    const uusKirjeldus = document.getElementById("muuda-kirjeldus").value;
+                    const uusHind = parseFloat(document.getElementById("muuda-hind").value);
+                    const uusStaatus = document.getElementById("muuda-staatus").value;
+
+                    curatorMary.editProgram(programm, uusPealkiri, uusKirjeldus, uusHind);
+                    programm.setStatus(uusStaatus);
+
+                    naitaPaneeli('vaata-paneel');
+                }
+            });
+        };
+
+        function avaMuutmisPaneel() {
+            naitaPaneeli('muuda-paneel');
+            const selectEl = document.getElementById("muuda-valik");
+            selectEl.innerHTML = "";
+
+            kumu.getPrograms().forEach(p => {
+                const opt = document.createElement("option");
+                opt.value = p.getId();
+                opt.text = p.getTitle();
+                selectEl.appendChild(opt);
+            });
+            laeProgrammiAndmed();
+        }
+
+        function laeProgrammiAndmed() {
+            const valitudId = parseInt(document.getElementById("muuda-valik").value);
+            const programm = kumu.findProgram(valitudId);
+
+            if (programm) {
+                document.getElementById("muuda-pealkiri").value = programm.getTitle();
+                document.getElementById("muuda-kirjeldus").value = programm.getDescription();
+                document.getElementById("muuda-hind").value = programm.getPrice();
+                document.getElementById("muuda-staatus").value = programm.getStatus();
+            }
+        }
+    </script>
+</body>
+
+</html>

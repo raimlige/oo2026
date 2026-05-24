@@ -58,10 +58,9 @@
 
             reader.onload = function (e) {
                 const content = e.target.result;
-                // Split file into lines and filter out empty lines
                 const lines = content.split(/\r?\n/).filter(line => line.trim() !== "");
 
-                library = new Library(); // Reset library
+                library = new Library();
 
                 lines.forEach(line => {
                     const parts = line.split("|");
@@ -124,7 +123,6 @@
             out.innerHTML = "";
             const items = library.getAllItems();
 
-            // Note: Fixed typo from 'lenght' to 'length'
             if (items.length === 0) {
                 out.innerHTML = "(No items)";
                 return;
@@ -136,7 +134,6 @@
                 out.appendChild(div);
             });
         }
-        //Expose functions to HTML buttons
         window.startPage = startPage;
         window.addItem = addItem;
         window.showItems = showItems;
